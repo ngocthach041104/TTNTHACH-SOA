@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/ac32ef42-22f8-412b-a6c5-0e515199cf0f)# TTNTHACH
+# TTNTHACH
 Exercise
  Give the world database script as attachment, import it to database then create an application for discovering the database.
 
