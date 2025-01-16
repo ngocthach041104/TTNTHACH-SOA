@@ -85,7 +85,13 @@
     <None Include="Connected Services\ServiceReference1\Client.ServiceReference1.GetAllCountriesResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Connected Services\ServiceReference1\Client.ServiceReference1.GetCitiesByPopulationRangeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Connected Services\ServiceReference1\Client.ServiceReference1.GetCityByNameResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceReference1\Client.ServiceReference1.GetCountriesByContinentResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Connected Services\ServiceReference1\Client.ServiceReference1.GetCountryByCodeResponse.datasource">

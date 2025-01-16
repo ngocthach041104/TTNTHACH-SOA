@@ -259,6 +259,20 @@ namespace Client.ServiceReference1 {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetAllCitiesByCountryCode", ReplyAction="*")]
         System.Threading.Tasks.Task<Client.ServiceReference1.GetAllCitiesByCountryCodeResponse> GetAllCitiesByCountryCodeAsync(Client.ServiceReference1.GetAllCitiesByCountryCodeRequest request);
+        
+        // CODEGEN: Generating message contract since element name continent from namespace http://tempuri.org/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetCountriesByContinent", ReplyAction="*")]
+        Client.ServiceReference1.GetCountriesByContinentResponse GetCountriesByContinent(Client.ServiceReference1.GetCountriesByContinentRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetCountriesByContinent", ReplyAction="*")]
+        System.Threading.Tasks.Task<Client.ServiceReference1.GetCountriesByContinentResponse> GetCountriesByContinentAsync(Client.ServiceReference1.GetCountriesByContinentRequest request);
+        
+        // CODEGEN: Generating message contract since element name GetCitiesByPopulationRangeResult from namespace http://tempuri.org/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetCitiesByPopulationRange", ReplyAction="*")]
+        Client.ServiceReference1.GetCitiesByPopulationRangeResponse GetCitiesByPopulationRange(Client.ServiceReference1.GetCitiesByPopulationRangeRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetCitiesByPopulationRange", ReplyAction="*")]
+        System.Threading.Tasks.Task<Client.ServiceReference1.GetCitiesByPopulationRangeResponse> GetCitiesByPopulationRangeAsync(Client.ServiceReference1.GetCitiesByPopulationRangeRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -526,6 +540,146 @@ namespace Client.ServiceReference1 {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class GetCountriesByContinentRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetCountriesByContinent", Namespace="http://tempuri.org/", Order=0)]
+        public Client.ServiceReference1.GetCountriesByContinentRequestBody Body;
+        
+        public GetCountriesByContinentRequest() {
+        }
+        
+        public GetCountriesByContinentRequest(Client.ServiceReference1.GetCountriesByContinentRequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class GetCountriesByContinentRequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string continent;
+        
+        public GetCountriesByContinentRequestBody() {
+        }
+        
+        public GetCountriesByContinentRequestBody(string continent) {
+            this.continent = continent;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class GetCountriesByContinentResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetCountriesByContinentResponse", Namespace="http://tempuri.org/", Order=0)]
+        public Client.ServiceReference1.GetCountriesByContinentResponseBody Body;
+        
+        public GetCountriesByContinentResponse() {
+        }
+        
+        public GetCountriesByContinentResponse(Client.ServiceReference1.GetCountriesByContinentResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class GetCountriesByContinentResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public Client.ServiceReference1.Country[] GetCountriesByContinentResult;
+        
+        public GetCountriesByContinentResponseBody() {
+        }
+        
+        public GetCountriesByContinentResponseBody(Client.ServiceReference1.Country[] GetCountriesByContinentResult) {
+            this.GetCountriesByContinentResult = GetCountriesByContinentResult;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class GetCitiesByPopulationRangeRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetCitiesByPopulationRange", Namespace="http://tempuri.org/", Order=0)]
+        public Client.ServiceReference1.GetCitiesByPopulationRangeRequestBody Body;
+        
+        public GetCitiesByPopulationRangeRequest() {
+        }
+        
+        public GetCitiesByPopulationRangeRequest(Client.ServiceReference1.GetCitiesByPopulationRangeRequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class GetCitiesByPopulationRangeRequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
+        public int minPopulation;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+        public int maxPopulation;
+        
+        public GetCitiesByPopulationRangeRequestBody() {
+        }
+        
+        public GetCitiesByPopulationRangeRequestBody(int minPopulation, int maxPopulation) {
+            this.minPopulation = minPopulation;
+            this.maxPopulation = maxPopulation;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class GetCitiesByPopulationRangeResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetCitiesByPopulationRangeResponse", Namespace="http://tempuri.org/", Order=0)]
+        public Client.ServiceReference1.GetCitiesByPopulationRangeResponseBody Body;
+        
+        public GetCitiesByPopulationRangeResponse() {
+        }
+        
+        public GetCitiesByPopulationRangeResponse(Client.ServiceReference1.GetCitiesByPopulationRangeResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class GetCitiesByPopulationRangeResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public Client.ServiceReference1.City[] GetCitiesByPopulationRangeResult;
+        
+        public GetCitiesByPopulationRangeResponseBody() {
+        }
+        
+        public GetCitiesByPopulationRangeResponseBody(Client.ServiceReference1.City[] GetCitiesByPopulationRangeResult) {
+            this.GetCitiesByPopulationRangeResult = GetCitiesByPopulationRangeResult;
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public interface WebService1SoapChannel : Client.ServiceReference1.WebService1Soap, System.ServiceModel.IClientChannel {
     }
@@ -649,6 +803,58 @@ namespace Client.ServiceReference1 {
             inValue.Body = new Client.ServiceReference1.GetAllCitiesByCountryCodeRequestBody();
             inValue.Body.countryCode = countryCode;
             return ((Client.ServiceReference1.WebService1Soap)(this)).GetAllCitiesByCountryCodeAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Client.ServiceReference1.GetCountriesByContinentResponse Client.ServiceReference1.WebService1Soap.GetCountriesByContinent(Client.ServiceReference1.GetCountriesByContinentRequest request) {
+            return base.Channel.GetCountriesByContinent(request);
+        }
+        
+        public Client.ServiceReference1.Country[] GetCountriesByContinent(string continent) {
+            Client.ServiceReference1.GetCountriesByContinentRequest inValue = new Client.ServiceReference1.GetCountriesByContinentRequest();
+            inValue.Body = new Client.ServiceReference1.GetCountriesByContinentRequestBody();
+            inValue.Body.continent = continent;
+            Client.ServiceReference1.GetCountriesByContinentResponse retVal = ((Client.ServiceReference1.WebService1Soap)(this)).GetCountriesByContinent(inValue);
+            return retVal.Body.GetCountriesByContinentResult;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Client.ServiceReference1.GetCountriesByContinentResponse> Client.ServiceReference1.WebService1Soap.GetCountriesByContinentAsync(Client.ServiceReference1.GetCountriesByContinentRequest request) {
+            return base.Channel.GetCountriesByContinentAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Client.ServiceReference1.GetCountriesByContinentResponse> GetCountriesByContinentAsync(string continent) {
+            Client.ServiceReference1.GetCountriesByContinentRequest inValue = new Client.ServiceReference1.GetCountriesByContinentRequest();
+            inValue.Body = new Client.ServiceReference1.GetCountriesByContinentRequestBody();
+            inValue.Body.continent = continent;
+            return ((Client.ServiceReference1.WebService1Soap)(this)).GetCountriesByContinentAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Client.ServiceReference1.GetCitiesByPopulationRangeResponse Client.ServiceReference1.WebService1Soap.GetCitiesByPopulationRange(Client.ServiceReference1.GetCitiesByPopulationRangeRequest request) {
+            return base.Channel.GetCitiesByPopulationRange(request);
+        }
+        
+        public Client.ServiceReference1.City[] GetCitiesByPopulationRange(int minPopulation, int maxPopulation) {
+            Client.ServiceReference1.GetCitiesByPopulationRangeRequest inValue = new Client.ServiceReference1.GetCitiesByPopulationRangeRequest();
+            inValue.Body = new Client.ServiceReference1.GetCitiesByPopulationRangeRequestBody();
+            inValue.Body.minPopulation = minPopulation;
+            inValue.Body.maxPopulation = maxPopulation;
+            Client.ServiceReference1.GetCitiesByPopulationRangeResponse retVal = ((Client.ServiceReference1.WebService1Soap)(this)).GetCitiesByPopulationRange(inValue);
+            return retVal.Body.GetCitiesByPopulationRangeResult;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Client.ServiceReference1.GetCitiesByPopulationRangeResponse> Client.ServiceReference1.WebService1Soap.GetCitiesByPopulationRangeAsync(Client.ServiceReference1.GetCitiesByPopulationRangeRequest request) {
+            return base.Channel.GetCitiesByPopulationRangeAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Client.ServiceReference1.GetCitiesByPopulationRangeResponse> GetCitiesByPopulationRangeAsync(int minPopulation, int maxPopulation) {
+            Client.ServiceReference1.GetCitiesByPopulationRangeRequest inValue = new Client.ServiceReference1.GetCitiesByPopulationRangeRequest();
+            inValue.Body = new Client.ServiceReference1.GetCitiesByPopulationRangeRequestBody();
+            inValue.Body.minPopulation = minPopulation;
+            inValue.Body.maxPopulation = maxPopulation;
+            return ((Client.ServiceReference1.WebService1Soap)(this)).GetCitiesByPopulationRangeAsync(inValue);
         }
     }
 }

@@ -1,293 +1,210 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-//using ServiceReference1;
+// Namespace cho service reference (thường được tự động tạo sau khi thêm Service Reference)
+using Client.ServiceReference1;  // 💡 English: CountryServiceReference
+
 namespace Client
 {
     public partial class Form1 : Form
     {
+        // 🔌 Khai báo client kết nối với Web Service
+        private WebService1SoapClient serviceClient;
+
         public Form1()
         {
             InitializeComponent();
+            // 🏗️ Khởi tạo đối tượng kết nối đến Service
+            serviceClient = new WebService1SoapClient();
+            // 🎯 Gán sự kiện cho các button (nếu chưa gán trong Designer)
+            btn_getAllCountry.Click += Btn_getAllCountry_Click;
+            btn_getCountrybyCode.Click += Btn_getCountrybyCode_Click;
+            btn_getCityByName.Click += Btn_getCityByName_Click;
+            btn_getAllCityFromCountry.Click += Btn_getAllCityFromCountry_Click;
+            btn_getCountriesByContinent.Click += Btn_getCountriesByContinent_Click;
+            btn_getCitiesByPopulationRange.Click += Btn_getCitiesByPopulationRange_Click;
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        // 📊 Helper: Chuyển đổi danh sách Countries thành DataTable
+        private DataTable ConvertCountriesToDataTable(Country[] countries)
         {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("Code");
+            dt.Columns.Add("Name");
+            dt.Columns.Add("Continent");
+            dt.Columns.Add("Region");
+            dt.Columns.Add("Population");
 
+            foreach (var c in countries)
+            {
+                dt.Rows.Add(c.Code, c.Name, c.Continent, c.Region, c.Population);
+            }
+            return dt;
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        // 📊 Helper: Chuyển đổi danh sách Cities thành DataTable
+        private DataTable ConvertCitiesToDataTable(City[] cities)
         {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("ID");
+            dt.Columns.Add("Name");
+            dt.Columns.Add("CountryCode");
+            dt.Columns.Add("District");
+            dt.Columns.Add("Population");
 
+            foreach (var c in cities)
+            {
+                dt.Rows.Add(c.ID, c.Name, c.CountryCode, c.District, c.Population);
+            }
+            return dt;
         }
 
-        private async void button1_Click(object sender, EventArgs e)
+        // 🔘 Sự kiện: Get All Country
+        private async void Btn_getAllCountry_Click(object sender, EventArgs e)
         {
             try
             {
-                // Tạo client để gọi Web Service
-                var client = new ServiceReference1.WebService1SoapClient();
+                // 🎯 Gọi web service
+                var response = await serviceClient.GetAllCountriesAsync();
+                var countries = response.Body.GetAllCountriesResult; 
+                dbgv_exportdata.DataSource = ConvertCountriesToDataTable(countries);
 
-                // Gọi hàm GetAllCountries từ Web Service (bất đồng bộ)
-                var response = await client.GetAllCountriesAsync();
-
-                // Trích xuất danh sách quốc gia từ đối tượng trả về
-                var countries = response.Body.GetAllCountriesResult;
-
-                // Hiển thị dữ liệu trong DataGridView
-                if (countries != null && countries.Length > 0)
-                {
-                    dbgv_exportdata.DataSource = null;
-                    dbgv_exportdata.DataSource = ConvertCountriesToDataTable(countries);
-                }
-                else
-                {
-                    MessageBox.Show("No countries found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("An error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error: {ex.Message}");
             }
-
         }
 
-
-        private void lb_CityName_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txb_CountryCode_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txb_CityName_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txb_CountryName_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private async void getCountrybyCode_Click(object sender, EventArgs e)
+        // 🔘 Sự kiện: Get Country by Code
+        private async void Btn_getCountrybyCode_Click(object sender, EventArgs e)
         {
             try
             {
-                // Tạo client để gọi Web Service
-                var client = new ServiceReference1.WebService1SoapClient();
-
-                // Lấy mã quốc gia từ TextBox
-                string countryCode = txt_CountryCode.Text.Trim();
-
-                if (string.IsNullOrEmpty(countryCode))
+                string code = txt_CountryCode.Text.Trim();
+                if (string.IsNullOrEmpty(code))
                 {
-                    MessageBox.Show("Please enter a valid country code.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Please input Country Code.");
                     return;
                 }
-
-                // Gọi hàm GetCountryByCode từ Web Service (bất đồng bộ)
-                var response = await client.GetCountryByCodeAsync(countryCode);
-
-                // Trích xuất thông tin quốc gia từ đối tượng trả về
-                var country = response.Body.GetCountryByCodeResult;
-
-                // Hiển thị dữ liệu trong DataGridView hoặc MessageBox
+                var response = await serviceClient.GetCountryByCodeAsync(code);
+                var country = response.Body.GetCountryByCodeResult;  // Truy cập vào thuộc tính chứa đối tượng Country
                 if (country != null)
                 {
-                    dbgv_exportdata.DataSource = null;
-                    dbgv_exportdata.DataSource = ConvertCountryToDataTable(new ServiceReference1.Country[] { country });
+                    DataTable dt = ConvertCountriesToDataTable(new Country[] { country });
+                    dbgv_exportdata.DataSource = dt;
                 }
                 else
                 {
-                    MessageBox.Show("Country not found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("No country found with the provided code.");
                 }
+
             }
             catch (Exception ex)
             {
-                MessageBox.Show("An error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error: {ex.Message}");
             }
         }
 
-        private async void getCityByName_Click(object sender, EventArgs e)
+        // 🔘 Sự kiện: Get City by Name
+        private async void Btn_getCityByName_Click(object sender, EventArgs e)
         {
             try
             {
-                // Tạo client để gọi Web Service
-                var client = new ServiceReference1.WebService1SoapClient();
-
-                // Lấy dữ liệu từ TextBox
                 string cityName = txt_CityName.Text.Trim();
-
                 if (string.IsNullOrEmpty(cityName))
                 {
-                    MessageBox.Show("Please enter a valid city name.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Please input City Name.");
                     return;
                 }
 
-                // Gọi hàm GetCityByName từ Web Service (bất đồng bộ)
-                var response = await client.GetCityByNameAsync(cityName);
-
-                // Trích xuất thông tin thành phố từ đối tượng trả về
-                var city = response.Body.GetCityByNameResult;
-
-                // Hiển thị dữ liệu trong DataGridView hoặc MessageBox
+                var response = await serviceClient.GetCityByNameAsync(cityName);
+                var city = response.Body.GetCityByNameResult; // Truy cập vào thuộc tính chứa thông tin City
                 if (city != null)
                 {
-                    dbgv_exportdata.DataSource = null;
-                    dbgv_exportdata.DataSource = ConvertCityToDataTable(new ServiceReference1.City[] { city });
+                    DataTable dt = ConvertCitiesToDataTable(new City[] { city });
+                    dbgv_exportdata.DataSource = dt;
                 }
                 else
                 {
-                    MessageBox.Show("City not found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("No city found with the provided name.");
                 }
+
             }
             catch (Exception ex)
             {
-                MessageBox.Show("An error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error: {ex.Message}");
             }
         }
 
-        private async void getAllCityFromCountry_Click(object sender, EventArgs e)
+        // 🔘 Sự kiện: Get All Cities by Country Code
+        private async void Btn_getAllCityFromCountry_Click(object sender, EventArgs e)
         {
             try
             {
-                // Tạo client để gọi Web Service
-                var client = new ServiceReference1.WebService1SoapClient();
-
-                // Lấy dữ liệu từ TextBox
                 string countryCode = txt_CountryCode.Text.Trim();
-
                 if (string.IsNullOrEmpty(countryCode))
                 {
-                    MessageBox.Show("Please enter a valid country code.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Please input Country Code.");
                     return;
                 }
+                var response = await serviceClient.GetAllCitiesByCountryCodeAsync(countryCode);
+                var cities = response.Body.GetAllCitiesByCountryCodeResult; // Lấy danh sách City[] từ thuộc tính đúng
+                dbgv_exportdata.DataSource = ConvertCitiesToDataTable(cities);
 
-                // Gọi hàm GetAllCitiesByCountryCode từ Web Service (bất đồng bộ)
-                var response = await client.GetAllCitiesByCountryCodeAsync(countryCode);
-
-                // Trích xuất danh sách thành phố từ đối tượng trả về
-                var cities = response.Body.GetAllCitiesByCountryCodeResult;
-
-                // Hiển thị dữ liệu trong DataGridView
-                if (cities != null && cities.Length > 0)
-                {
-                    dbgv_exportdata.DataSource = null;
-                    dbgv_exportdata.DataSource = ConvertToDataTable(cities);
-                }
-                else
-                {
-                    MessageBox.Show("No cities found for the given country.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("An error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error: {ex.Message}");
             }
         }
 
-        private void lb_CountryName_Click(object sender, EventArgs e)
+        // 🔘 Sự kiện: Get Countries by Continent
+        private async void Btn_getCountriesByContinent_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-        private DataTable ConvertToDataTable(ServiceReference1.City[] cities)
-        {
-            // Tạo DataTable để hiển thị dữ liệu
-            var table = new DataTable();
-
-            // Thêm cột vào DataTable
-            table.Columns.Add("ID", typeof(int));
-            table.Columns.Add("Name", typeof(string));
-            table.Columns.Add("CountryCode", typeof(string));
-            table.Columns.Add("District", typeof(string));
-            table.Columns.Add("Population", typeof(int));
-
-            // Thêm dữ liệu từ mảng vào DataTable
-            foreach (var city in cities)
+            try
             {
-                table.Rows.Add(city.ID, city.Name, city.CountryCode, city.District, city.Population);
+                string continent = txt_Continent.Text.Trim();
+                if (string.IsNullOrEmpty(continent))
+                {
+                    MessageBox.Show("Please input Continent.");
+                    return;
+                }
+                var response = await serviceClient.GetCountriesByContinentAsync(continent);
+                var countries = response.Body.GetCountriesByContinentResult; // Lấy danh sách Country[] từ thuộc tính đúng
+                dbgv_exportdata.DataSource = ConvertCountriesToDataTable(countries);
+
             }
-
-            return table;
-        }
-        private DataTable ConvertCityToDataTable(ServiceReference1.City[] cities)
-        {
-            // Tạo DataTable để hiển thị dữ liệu
-            var table = new DataTable();
-
-            // Thêm cột vào DataTable
-            table.Columns.Add("ID", typeof(int));
-            table.Columns.Add("Name", typeof(string));
-            table.Columns.Add("CountryCode", typeof(string));
-            table.Columns.Add("District", typeof(string));
-            table.Columns.Add("Population", typeof(int));
-
-            // Thêm dữ liệu từ mảng vào DataTable
-            foreach (var city in cities)
+            catch (Exception ex)
             {
-                table.Rows.Add(city.ID, city.Name, city.CountryCode, city.District, city.Population);
+                MessageBox.Show($"Error: {ex.Message}");
             }
-
-            return table;
         }
 
-        private DataTable ConvertCountriesToDataTable(ServiceReference1.Country[] countries)
+        // 🔘 Sự kiện: Get Cities by Population Range
+        private async void Btn_getCitiesByPopulationRange_Click(object sender, EventArgs e)
         {
-            // Tạo DataTable để hiển thị dữ liệu
-            var table = new DataTable();
-
-            // Thêm cột vào DataTable
-            table.Columns.Add("Code", typeof(string));
-            table.Columns.Add("Name", typeof(string));
-            table.Columns.Add("Continent", typeof(string));
-            table.Columns.Add("Region", typeof(string));
-            table.Columns.Add("Population", typeof(int));
-
-            // Thêm dữ liệu từ mảng vào DataTable
-            foreach (var country in countries)
+            try
             {
-                table.Rows.Add(country.Code, country.Name, country.Continent, country.Region, country.Population);
+                if (!int.TryParse(txt_MinPopulation.Text.Trim(), out int minPop))
+                {
+                    MessageBox.Show("Please input a valid Min Population.");
+                    return;
+                }
+                if (!int.TryParse(txt_MaxPopulation.Text.Trim(), out int maxPop))
+                {
+                    MessageBox.Show("Please input a valid Max Population.");
+                    return;
+                }
+                var response = await serviceClient.GetCitiesByPopulationRangeAsync(minPop, maxPop);
+                var cities = response.Body.GetCitiesByPopulationRangeResult; // Lấy danh sách City[] từ thuộc tính đúng
+                dbgv_exportdata.DataSource = ConvertCitiesToDataTable(cities);
             }
-
-            return table;
-        }
-        private DataTable ConvertCountryToDataTable(ServiceReference1.Country[] countries)
-        {
-            // Tạo DataTable để hiển thị dữ liệu
-            var table = new DataTable();
-
-            // Thêm cột vào DataTable
-            table.Columns.Add("Code", typeof(string));
-            table.Columns.Add("Name", typeof(string));
-            table.Columns.Add("Continent", typeof(string));
-            table.Columns.Add("Region", typeof(string));
-            table.Columns.Add("Population", typeof(int));
-
-            // Thêm dữ liệu từ mảng vào DataTable
-            foreach (var country in countries)
+            catch (Exception ex)
             {
-                table.Rows.Add(country.Code, country.Name, country.Continent, country.Region, country.Population);
+                MessageBox.Show($"Error: {ex.Message}");
             }
-
-            return table;
         }
-
-
     }
-
 }

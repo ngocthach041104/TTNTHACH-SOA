@@ -7,14 +7,9 @@ using System.Web.Services;
 
 namespace CountryWS
 {
-    /// <summary>
-    /// Summary description for WebService1
-    /// </summary>
     [WebService(Namespace = "http://tempuri.org/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [System.ComponentModel.ToolboxItem(false)]
-    // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
-    // [System.Web.Script.Services.ScriptService]
     public class WebService1 : System.Web.Services.WebService
     {
         private readonly string connectionString = "Data Source=NGOCTHACH;Initial Catalog=world;" +
@@ -44,7 +39,6 @@ namespace CountryWS
             return results;
         }
 
-
         public class Country
         {
             public string Code { get; set; }
@@ -53,6 +47,7 @@ namespace CountryWS
             public string Region { get; set; }
             public int Population { get; set; }
         }
+
         public class City
         {
             public int ID { get; set; }
@@ -61,6 +56,7 @@ namespace CountryWS
             public string District { get; set; }
             public int Population { get; set; }
         }
+
         private List<Country> ConvertToCountries(List<Dictionary<string, object>> data)
         {
             var countries = new List<Country>();
@@ -94,6 +90,7 @@ namespace CountryWS
             }
             return cities;
         }
+
         [WebMethod]
         public List<Country> GetAllCountries()
         {
@@ -110,7 +107,6 @@ namespace CountryWS
             return ConvertToCountries(result).FirstOrDefault();
         }
 
-       
         [WebMethod]
         public City GetCityByName(string name)
         {
@@ -127,7 +123,22 @@ namespace CountryWS
             return ConvertToCities(result);
         }
 
-       
+        [WebMethod]
+        public List<Country> GetCountriesByContinent(string continent)
+        {
+            string query = "SELECT * FROM country WHERE Continent = @Continent";
+            var result = ExecuteQuery(query, new SqlParameter("@Continent", continent));
+            return ConvertToCountries(result);
+        }
 
+        [WebMethod]
+        public List<City> GetCitiesByPopulationRange(int minPopulation, int maxPopulation)
+        {
+            string query = "SELECT * FROM city WHERE Population BETWEEN @MinPopulation AND @MaxPopulation";
+            var result = ExecuteQuery(query,
+                new SqlParameter("@MinPopulation", minPopulation),
+                new SqlParameter("@MaxPopulation", maxPopulation));
+            return ConvertToCities(result);
+        }
     }
 }
